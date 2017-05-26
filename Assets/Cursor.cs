@@ -15,13 +15,13 @@ public class Cursor : MonoBehaviour {
         InvokeRepeating("DrawCube", .5f, 0.02f);
 
         recognizer = new GestureRecognizer();
-        recognizer.TappedEvent += EnableLaser;
+        recognizer.TappedEvent += ToggleLaser;
         recognizer.StartCapturingGestures();
 	}
 
-    private void EnableLaser (InteractionSourceKind source, int tapCount, Ray headRay) {
+    private void ToggleLaser(InteractionSourceKind source, int tapCount, Ray headRay) {
         Debug.Log("nonniiiin");
-        isLaserAllowed = true;
+        isLaserAllowed = !isLaserAllowed;
     }
 	
 	// Update is called once per frame
@@ -42,7 +42,7 @@ public class Cursor : MonoBehaviour {
                 newCube.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
                 newCube.AddComponent<DestroyCube>();
                 foreach (var comp in newCube.GetComponents<Component>()) {
-                    if (comp is Collider) {
+                    if (comp is Collider || comp is Rigidbody) {
                         Destroy(comp);
                     }
                 }
