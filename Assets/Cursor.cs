@@ -41,11 +41,7 @@ public class Cursor : MonoBehaviour {
                 newCube.transform.localScale = new Vector3(.1f, .1f, .1f);
                 newCube.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
                 newCube.AddComponent<DestroyCube>();
-                foreach (var comp in newCube.GetComponents<Component>()) {
-                    if (comp is Collider || comp is Rigidbody) {
-                        Destroy(comp);
-                    }
-                }
+                Destroy(newCube.GetComponent<Collider>());
             }
             else {
                 meshRenderer.enabled = false;
