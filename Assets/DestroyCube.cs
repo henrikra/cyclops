@@ -6,7 +6,7 @@ public class DestroyCube : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Invoke("DestroyPerkele", 5);
+        Invoke("DestroyPerkele", 3);
     }
 	
 	// Update is called once per frame
