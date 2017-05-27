@@ -11,8 +11,6 @@ public class Cursor : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         InvokeRepeating("DrawCube", .5f, .1f);
-        laserBeam = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        laserBeam.transform.localScale = new Vector3(1f, .5f, 5);
         recognizer = new GestureRecognizer();
         recognizer.TappedEvent += ToggleLaser;
         recognizer.StartCapturingGestures();
@@ -25,6 +23,10 @@ public class Cursor : MonoBehaviour {
 
     void Update() {
         if (isLaserAllowed) {
+            if (laserBeam == null) {
+                laserBeam = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                laserBeam.transform.localScale = new Vector3(1f, .5f, 5);
+            }
             var headPosition = Camera.main.transform.position;
             var gazeDirection = Camera.main.transform.forward;
 
@@ -40,7 +42,10 @@ public class Cursor : MonoBehaviour {
             }
             else {
             }
-        }    
+        }
+        else {
+            laserBeam = null;
+        }
     }
 
     // Update is called once per frame
