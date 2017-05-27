@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.VR.WSA.Input;
 
 public class Cursor : MonoBehaviour {
-    private MeshRenderer meshRenderer;
     private bool isLaserAllowed = false;
     GestureRecognizer recognizer;
+    private GameObject laserBeam;
 
 	// Use this for initialization
 	void Start () {
-        InvokeRepeating("DrawCube", .5f, 0.02f);
-
+        InvokeRepeating("DrawCube", .5f, .1f);
+        laserBeam = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        laserBeam.transform.localScale = new Vector3(1f, .5f, 5);
         recognizer = new GestureRecognizer();
         recognizer.TappedEvent += ToggleLaser;
         recognizer.StartCapturingGestures();
@@ -21,9 +22,29 @@ public class Cursor : MonoBehaviour {
         Debug.Log("nonniiiin");
         isLaserAllowed = !isLaserAllowed;
     }
-	
-	// Update is called once per frame
-	void DrawCube () {
+
+    void Update() {
+        if (isLaserAllowed) {
+            var headPosition = Camera.main.transform.position;
+            var gazeDirection = Camera.main.transform.forward;
+
+            RaycastHit hitInfo;
+            if (Physics.Raycast(headPosition, gazeDirection, out hitInfo)) {
+                var bitInFrontOfHead = new Vector3(headPosition.x, headPosition.y, headPosition.z + .9f);
+                var between = hitInfo.point - bitInFrontOfHead;
+                laserBeam.transform.localScale = new Vector3(.7f, .075f, between.magnitude);
+                laserBeam.transform.position = between / 2 + bitInFrontOfHead;
+                laserBeam.transform.LookAt(hitInfo.point);
+                laserBeam.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+                Destroy(laserBeam.GetComponent<Collider>());
+            }
+            else {
+            }
+        }    
+    }
+
+    // Update is called once per frame
+    void DrawCube () {
         if (isLaserAllowed) {
             var headPosition = Camera.main.transform.position;
             var gazeDirection = Camera.main.transform.forward;
