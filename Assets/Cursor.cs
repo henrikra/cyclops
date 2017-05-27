@@ -10,8 +10,6 @@ public class Cursor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        meshRenderer = this.gameObject.GetComponentInChildren<MeshRenderer>();
-        GetComponent<Renderer>().material.color = new Color(255, 0, 0);
         InvokeRepeating("DrawCube", .5f, 0.02f);
 
         recognizer = new GestureRecognizer();
@@ -32,10 +30,6 @@ public class Cursor : MonoBehaviour {
 
             RaycastHit hitInfo;
             if (Physics.Raycast(headPosition, gazeDirection, out hitInfo)) {
-                meshRenderer.enabled = true;
-
-                this.gameObject.transform.position = hitInfo.point;
-                this.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
                 var newCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 newCube.transform.position = hitInfo.point;
                 newCube.transform.localScale = new Vector3(.1f, .1f, .1f);
@@ -44,7 +38,6 @@ public class Cursor : MonoBehaviour {
                 Destroy(newCube.GetComponent<Collider>());
             }
             else {
-                meshRenderer.enabled = false;
             }
         }
 	}
