@@ -37,7 +37,8 @@ public class Cursor : MonoBehaviour {
                 laserBeam.transform.localScale = new Vector3(.7f, .075f, between.magnitude);
                 laserBeam.transform.position = between / 2 + bitInFrontOfHead;
                 laserBeam.transform.LookAt(hitInfo.point);
-                laserBeam.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+                laserBeam.GetComponent<Renderer>().material = new Material(Shader.Find("Transparent/Diffuse"));
+                laserBeam.GetComponent<Renderer>().material.color = new Color(255, 0, 0, .3f);
                 Destroy(laserBeam.GetComponent<Collider>());
             }
             else {
