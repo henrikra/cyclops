@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.VR.WSA.Input;
 
 public class Cursor : MonoBehaviour {
-    private bool isLaserAllowed = true;
+    private bool isLaserAllowed = false;
     GestureRecognizer recognizer;
 
 	// Use this for initialization
